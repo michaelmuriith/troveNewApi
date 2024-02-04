@@ -4,6 +4,10 @@
 # all target directories
 **/target/
 
+#kubectl
+/kubectl
+
+
 
 # Eclipse-specific files
 *.project

@@ -89,22 +89,6 @@ services:
       - postgres
       - rabiitmq
 
-  fraud:
-    image: michael258/fraud:latest
-    container_name: fraud
-    ports:
-      - "8081:8081"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-      - devKenya
-    depends_on:
-      - zipkin
-      - eureka-server
-      - postgres
-      - rabiitmq
-
   notification:
     image: michael258/notification:latest
     container_name: notification
@@ -120,6 +104,23 @@ services:
         - eureka-server
         - postgres
         - rabiitmq
+
+  post:
+    image: michael258/post:latest
+    container_name: post
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - devKenya
+    depends_on:
+      - zipkin
+      - eureka-server
+      - postgres
+      - rabiitmq
+      - user
 
 
 
