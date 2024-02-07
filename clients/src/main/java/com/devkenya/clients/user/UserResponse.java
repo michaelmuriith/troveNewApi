@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.UUID;
 
 public record UserResponse(
-        String id,
+        UUID id,
 
         URL businessLogo,
         URL avatar,

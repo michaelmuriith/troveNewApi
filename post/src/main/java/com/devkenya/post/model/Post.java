@@ -16,11 +16,22 @@ import java.util.UUID;
 @Table(name = "t_post")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     private String content;
     private URI image;
+    private URI video;
+    private URI gif;
+
+    @Column(name = "has_video", nullable = false, columnDefinition = "boolean default false")
+    private boolean hasVideo;
+
+    @Column(name = "has_gif", nullable = false, columnDefinition = "boolean default false")
+    private boolean hasGif;
+
 
     @Column(name = "has_image", nullable = false, columnDefinition = "boolean default false")
     private boolean hasImage;
@@ -31,19 +42,43 @@ public class Post {
     @Column(name = "comments_count", nullable = false, columnDefinition = "integer default 0")
     private int commentsCount;
 
-    @Column(name ="last_comment", nullable = false, columnDefinition = "text default ''")
-    private String lastComment;
 
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 
-    @Column(name = "updated_at", nullable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(name = "updated_at", nullable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp updatedAt;
 
     @Column(name = "is_deleted", nullable = false, columnDefinition = "boolean default false")
     private boolean isDeleted;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @PrePersist
+    public void prePersist() {
+        createdAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = new Timestamp(System.currentTimeMillis());
+        isDeleted = false;
+        likesCount = 0;
+        commentsCount = 0;
+        id = UUID.randomUUID();
+        if (this.isDeleted) {
+            throw new IllegalArgumentException("Cannot create a deleted post");
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    @PreRemove
+    public void preRemove() {
+        isDeleted = true;
+    }
+
+    @PostLoad
+    public void postLoad() {
+        if (isDeleted) {
+            throw new IllegalArgumentException("Cannot load a deleted post");
+        }
+    }
 }

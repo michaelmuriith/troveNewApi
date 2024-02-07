@@ -2,6 +2,7 @@ package com.devkenya.post.dto;
 
 import com.devkenya.clients.user.UserResponse;
 
+import java.net.URI;
 import java.util.UUID;
 
 public record PostsResItem(
@@ -9,16 +10,17 @@ public record PostsResItem(
         UserResponse user,
         String content,
         boolean hasImage,
-        String image,
+        URI image,
         boolean hasVideo,
-        String video,
+        URI video,
         boolean hasGif,
-        String gif,
+        URI gif,
         boolean hasLiked,
         String createdAt
 
 ) {
-    public PostsResItem(UUID id, UserResponse userResponse, String content, boolean hasImage, boolean b, boolean hasVideo, boolean hasLiked, String string) {
-        this(id, userResponse, content, hasImage, null, hasVideo, null, false, null, hasLiked, string);
+
+    public PostsResItem(UUID id, UserResponse userResponse, String content, boolean hasImage, URI image, boolean hasVideo, URI video, boolean hasGif, URI gif, Boolean orDefault, String string, Long orDefault1) {
+        this(id, userResponse, content, hasImage, image, hasVideo, video, hasGif, gif, orDefault, string);
     }
 }

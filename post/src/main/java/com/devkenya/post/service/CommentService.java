@@ -80,7 +80,7 @@ public class CommentService {
                     .collect(Collectors.toList());
             log.info("User ids: {}", userIds);
 
-            Map<String, UserResponse> userDetailsMap = fetchUserDetailsInBatches(userIds);
+            Map<UUID, UserResponse> userDetailsMap = fetchUserDetailsInBatches(userIds);
             log.info("User details map: {}", userDetailsMap);
 
             // step 3: map comments to comment response
@@ -97,7 +97,7 @@ public class CommentService {
         }
     }
 
-    private CommentRes createCommentResItem(Comment comment, Map<String, UserResponse> userDetailsMap) {
+    private CommentRes createCommentResItem(Comment comment, Map<UUID, UserResponse> userDetailsMap) {
         UserResponse userResponse = userDetailsMap.get(comment.getUserId());
         log.info("User response: {}", userResponse);
         return new CommentRes(
@@ -116,7 +116,7 @@ public class CommentService {
     }
 
 
-    private Map<String, UserResponse> fetchUserDetailsInBatches(List<String> userIds) {
+    private Map<UUID, UserResponse> fetchUserDetailsInBatches(List<String> userIds) {
         return userServiceClient.getUsersByIds(userIds).stream()
                 .collect(Collectors.toMap(UserResponse::id, userResponse -> userResponse));
     }

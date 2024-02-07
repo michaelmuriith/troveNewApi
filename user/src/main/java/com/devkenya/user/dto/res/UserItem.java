@@ -7,7 +7,7 @@ public record UserItem(
         String name,
         String description,
         java.net.URL avatar,
-        int online,
+        boolean online,
         int type
 ) {
 }

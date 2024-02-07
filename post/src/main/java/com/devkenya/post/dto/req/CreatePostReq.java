@@ -5,6 +5,9 @@ import java.net.URI;
 public record CreatePostReq(
             String content,
             URI image,
-            String userId
+            String userId,
+            URI video,
+            URI gif
+
 ) {
 }

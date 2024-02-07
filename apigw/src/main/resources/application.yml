@@ -20,7 +20,7 @@ spring:
         - id: POST
           uri: lb://POST
           predicates:
-            - Path=/api/v1/post/**
+            - Path=/api/v1/posts/**
 
 eureka:
   client:
